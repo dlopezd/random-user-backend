@@ -19,7 +19,7 @@ exports.get = async (req, res, next) => {
                     if(error){
                         res.status(500).send({ ok: false, error: error, data: null });
                     }
-                    res.send({ ok: true, error: null, data: usersApi });
+                    res.send({ ok: true, error: null, data: JSON.stringify(usersApi) });
                 })
                 
             }
