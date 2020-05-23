@@ -10,7 +10,7 @@ exports.get = async (req, res, next) => {
             return;
         }
         if (redisGetResponse) {
-            res.status(200).send({ ok: true, error: null, data: redisGetResponse });
+            res.status(200).send({ ok: true, error: null, data: JSON.parse(redisGetResponse) });
         }
         else {
             try {
