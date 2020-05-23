@@ -4,7 +4,7 @@ let client = require('redis').createClient(process.env.REDISTOGO_URL);
 const KEY_CACHE = "/get"
 
 exports.get = async (req, res, next) => {
-    client.get(KEY_CACHE, (error, redisGetResponse) => {
+    client.get(KEY_CACHE, async (error, redisGetResponse) => {
         if (error) {
             res.status(500).send({ ok: false, error: error, data: null });
             return;
