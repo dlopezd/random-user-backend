@@ -15,11 +15,11 @@ exports.get = async (req, res, next) => {
         else {
             try {
                 let usersApi = await randomUsers.getUsers(req.results);
-                client.set(KEY_CACHE, usersApi, (error, redisSetResponse) =>{
+                client.set(KEY_CACHE, JSON.stringify(usersApi), (error, redisSetResponse) =>{
                     if(error){
                         res.status(500).send({ ok: false, error: error, data: null });
                     }
-                    res.send({ ok: true, error: null, data: JSON.stringify(usersApi) });
+                    res.send({ ok: true, error: null, data: usersApi });
                 })
                 
             }
