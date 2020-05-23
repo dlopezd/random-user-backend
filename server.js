@@ -1,7 +1,7 @@
 const config = require('config');
 const express = require('express');
 const http = require('http');
-var cors = require('cors')
+const cors = require('cors');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -12,6 +12,16 @@ const server = express();
 server.use(cors())
 server.use(routerUsers);
 
+
+let client = require('redis').createClient(process.env.REDISTOGO_URL);
+let Redis = require('ioredis');
+let redis = new Redis(process.env.REDISTOGO_URL);
+client.set("KEY", "VALUE", () => {
+  console.log("VALUE SETEADO");
+  
+})
+
+
 server.use((err, req, res, next) => {
   if (!err.statusCode) {
     err.statusCode = 500;
@@ -21,7 +31,6 @@ server.use((err, req, res, next) => {
 
 const serverHttp = http.createServer(server);
 server.use(express.json());
-
 
 serverHttp.listen(process.env.PORT, () => {
   const host = serverHttp.address().address;

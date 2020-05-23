@@ -1,7 +1,7 @@
 {
-  "name": "backend-spotify",
+  "name": "user-random-backend",
   "version": "1.0.0",
-  "description": "Backend para consultar álbumes en Spotify",
+  "description": "Backend para consultar api random-user",
   "main": "app.js",
   "scripts": {
     "start": "node server.js",
@@ -23,9 +23,11 @@
     "config": "^3.3.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "ioredis": "^4.17.1",
     "memory-cache": "^0.2.0",
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
+    "redis": "^3.0.2",
     "sequelize": "^5.21.10"
   },
   "devDependencies": {
