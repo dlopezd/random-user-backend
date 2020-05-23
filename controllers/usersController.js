@@ -1,19 +1,37 @@
 const randomUsers = require('../services/randomUsers')
 
-exports.get = async (req, res, next) => {
-    try {
-        // CONSULTAR REDIS
-        // SI NO EXISTE => CONSULTAR API Y GUARDAR EN REDIS
-        let usersApi = await randomUsers.getUsers(req.results)
-        // GENERAR RESPUESTA
-        res.send({ ok: true, error: null, data: usersApi });
-    }
-    catch (error) {
-        console.error(`[userController.get] error:${error.message}`);
+let client = require('redis').createClient(process.env.REDISTOGO_URL);
+const KEY_CACHE = "/get"
 
-        if (!error.statusCode) {
-            error.statusCode = 500;
+exports.get = async (req, res, next) => {
+    client.get(KEY_CACHE, (error, redisGetResponse) => {
+        if (error) {
+            res.status(500).send({ ok: false, error: error, data: null });
+            return;
         }
-        next(error);
-    }
+        if (redisGetResponse) {
+            res.status(200).send({ ok: true, error: null, data: redisGetResponse });
+        }
+        else {
+            try {
+                let usersApi = await randomUsers.getUsers(req.results);
+                client.set(KEY_CACHE, usersApi, (error, redisSetResponse) =>{
+                    if(error){
+                        res.status(500).send({ ok: false, error: error, data: null });
+                    }
+                    res.send({ ok: true, error: null, data: usersApi });
+                })
+                
+            }
+            catch (error) {
+                console.error(`[userController.get] error:${error.message}`);
+            
+                if (!error.statusCode) {
+                    error.statusCode = 500;
+                }
+                next(error);
+            }
+            
+        }
+    })
 }

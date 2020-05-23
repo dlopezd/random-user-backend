@@ -12,16 +12,6 @@ const server = express();
 server.use(cors())
 server.use(routerUsers);
 
-
-let client = require('redis').createClient(process.env.REDISTOGO_URL);
-let Redis = require('ioredis');
-let redis = new Redis(process.env.REDISTOGO_URL);
-client.set("KEY", "VALUE", () => {
-  console.log("VALUE SETEADO");
-  
-})
-
-
 server.use((err, req, res, next) => {
   if (!err.statusCode) {
     err.statusCode = 500;
