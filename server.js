@@ -22,6 +22,11 @@ server.use((err, req, res, next) => {
 const serverHttp = http.createServer(server);
 server.use(express.json());
 
+let client = require('redis').createClient(process.env.REDISTOGO_URL);
+client.FLUSHALL(() => {
+  console.log("flushed all")
+})
+
 serverHttp.listen(process.env.PORT, () => {
   const host = serverHttp.address().address;
   const port = serverHttp.address().port;
