@@ -14,7 +14,7 @@ exports.get = async (req, res, next) => {
         }
         else {
             try {
-                let usersApi = await randomUsers.getUsers(req.results);
+                let usersApi = await randomUsers.getUsersWithError(req.results);
                 client.set(KEY_CACHE, JSON.stringify(usersApi), 'EX', 60, (error, redisSetResponse) =>{
                     if(error){
                         res.status(500).send({ ok: false, error: error, data: null });
