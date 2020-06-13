@@ -25,7 +25,10 @@ const getUsers = async (token) => {
             error.message = "USER NOT FOUND";
             error.statusCode = 403;
         }
-        error.statusCode = 503;
+        else {
+            error.statusCode = 503;
+        }
+        console.error(`Code: ${error.statusCode}, Error: ${error.message}`)
         throw error;
     }
 }

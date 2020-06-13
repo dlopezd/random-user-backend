@@ -8,7 +8,6 @@ const getUsersWithError = async results => {
     let randomNumber = undefined;
     do {
         randomNumber = Math.random();
-        console.log(randomNumber)
         if(randomNumber > 0.1) {
             return await getUsers(results);
         }
